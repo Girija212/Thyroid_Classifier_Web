@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Report{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">PROJECT REPORT</div><h1>Evaluation Report</h1><p>Dataset summary and measured test-set metrics from your local run.</p></div>
+{% if summary %}<div class="stats compact"><div class="stat"><span>ROWS</span><strong>{{ "{:,}".format(summary.dataset.rows) }}</strong></div><div class="stat"><span>FEATURES</span><strong>{{ summary.dataset.features }}</strong></div><div class="stat"><span>TRAIN ROWS</span><strong>{{ "{:,}".format(summary.train_rows) }}</strong></div><div class="stat"><span>TEST ROWS</span><strong>{{ "{:,}".format(summary.test_rows) }}</strong></div></div>
+<div class="panel"><h2>Dataset and target</h2><p>Target column: <strong>{{ summary.dataset.target_column }}</strong></p><p>Positive cases: {{ summary.dataset.positive }} ({{ "%.2f"|format(summary.dataset.positive_rate*100) }}%) · Negative cases: {{ summary.dataset.negative }}</p><p>Best model by F1-score: <strong>{{ summary.best_model }}</strong></p><a class="btn primary" href="{{ url_for('download_report') }}">Download JSON Evaluation</a></div>
+<div class="panel"><h2>Feature columns</h2><div class="tags">{% for col in summary.dataset.columns %}<span>{{ col }}</span>{% endfor %}</div></div>
+{% else %}<div class="empty">Train the models to generate a report.</div>{% endif %}
+{% endblock %}

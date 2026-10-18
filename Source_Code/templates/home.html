@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero"><div><div class="eyebrow">AI / MACHINE LEARNING PROJECT</div><h1>Thyroid Disease<br><span>Classification</span></h1><p>Explore thyroid data, train classification models, compare performance, and estimate hypothyroid risk from patient features.</p><div class="actions"><a class="btn primary" href="{{ url_for('upload') }}">⇧ Upload Dataset</a><a class="btn ghost" href="{{ url_for('predict') }}">⚕ Open Prediction</a></div></div><div class="hero-art"><div class="orb">✚</div><div class="floating f1">Random Forest</div><div class="floating f2">Logistic Regression</div><div class="floating f3">ROC-AUC · F1 · Recall</div></div></section>
+<div class="stats">
+<div class="stat"><span>DATASET</span><strong>{{ "{:,}".format(summary.rows) if summary else "—" }}</strong><small>records loaded</small></div>
+<div class="stat"><span>FEATURES</span><strong>{{ summary.features if summary else "—" }}</strong><small>predictor columns</small></div>
+<div class="stat"><span>POSITIVE CASES</span><strong>{{ "{:,}".format(summary.positive) if summary else "—" }}</strong><small>hypothyroid label</small></div>
+<div class="stat"><span>MODEL STATUS</span><strong>{{ "Ready" if trained else "Pending" }}</strong><small>{{ "Trained model available" if trained else "Upload data and train" }}</small></div>
+</div>
+<h2 class="section-title">Project workspace</h2><div class="card-grid">
+<a class="feature-card" href="{{ url_for('upload') }}"><div class="feature-icon blue">⇧</div><h3>Upload Dataset</h3><p>Load patient lab results from a CSV file and validate target labels.</p><span>Open upload →</span></a>
+<a class="feature-card" href="{{ url_for('analysis') }}"><div class="feature-icon teal">▥</div><h3>Explore Data</h3><p>Review class balance, lab distributions and feature relationships.</p><span>View analysis →</span></a>
+<a class="feature-card" href="{{ url_for('train') }}"><div class="feature-icon violet">⚙</div><h3>Train Models</h3><p>Fit Random Forest and Logistic Regression with a leak-free pipeline.</p><span>Train models →</span></a>
+<a class="feature-card" href="{{ url_for('predict') }}"><div class="feature-icon orange">⚕</div><h3>Predict</h3><p>Enter one patient's feature values or upload a batch CSV.</p><span>Make prediction →</span></a>
+</div>
+<div class="notice">⚠ This is an educational machine-learning demonstration. Predictions are not a medical diagnosis.</div>
+{% endblock %}

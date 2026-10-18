@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Compare Models{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">MODEL COMPARISON</div><h1>Compare Classifiers</h1><p>Compare predictive performance across accuracy, precision, recall, F1-score and ROC-AUC.</p></div>
+{% if summary %}<div class="chart-grid">{% for img in ["performance_comparison.png","confusion_matrices.png","roc_curves.png","feature_importance.png"] %}{% if img in image_files %}<div class="chart-card large"><img src="{{ url_for('chart_file', filename=img) }}" alt="{{ img }}"><div>{{ img.replace('_',' ').replace('.png','').title() }}</div></div>{% endif %}{% endfor %}</div>{% else %}<div class="empty">Train the models to create comparison charts. <a href="{{ url_for('train') }}">Go to training</a>.</div>{% endif %}
+{% endblock %}

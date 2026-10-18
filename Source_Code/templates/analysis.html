@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Analyze{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">EXPLORATORY DATA ANALYSIS</div><h1>Dataset Analysis</h1><p>Understand class balance, clinical feature distributions and correlations before training.</p></div>
+{% if error %}<div class="alert error">{{ error }} <a href="{{ url_for('upload') }}">Upload a dataset</a></div>{% endif %}
+{% if summary %}<div class="stats compact"><div class="stat"><span>ROWS</span><strong>{{ "{:,}".format(summary.rows) }}</strong></div><div class="stat"><span>FEATURES</span><strong>{{ summary.features }}</strong></div><div class="stat"><span>POSITIVE</span><strong>{{ "{:,}".format(summary.positive) }}</strong></div><div class="stat"><span>POSITIVE RATE</span><strong>{{ "%.1f"|format(summary.positive_rate*100) }}%</strong></div></div>
+<div class="chart-grid">{% for img in image_files %}<div class="chart-card"><img src="{{ url_for('chart_file', filename=img) }}" alt="{{ img }}"><div>{{ img.replace('_',' ').replace('.png','').title() }}</div></div>{% endfor %}</div>
+{% if not image_files %}<div class="empty">Charts are created when training starts. Visit <a href="{{ url_for('train') }}">Train</a> to generate them.</div>{% endif %}
+{% endif %}
+{% endblock %}

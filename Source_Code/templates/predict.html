@@ -1,0 +1,43 @@
+{% extends "base.html" %}{% block title %}Predict{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">PATIENT CLASSIFICATION</div><h1>Predict Thyroid Disease</h1><p>Enter available patient lab and clinical values to estimate the model's hypothyroid classification.</p></div>
+{% if not has_model %}<div class="alert error">No trained model found. <a href="{{ url_for('train') }}">Train the models first</a>.</div>{% endif %}
+{% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+<div class="panel prediction-panel"><div class="panel-banner"><div class="upload-symbol">⚕</div><h2>Enter Patient Lab Results</h2><p>Leave unknown values blank; the model pipeline imputes missing values.</p></div>
+<div class="sample-row"><strong>Sample values:</strong><button type="button" class="btn small ghost" onclick="fillSample('negative')">Negative example</button><button type="button" class="btn small ghost" onclick="fillSample('positive')">Positive example</button></div>
+<form method="post" class="predict-form">
+<div class="field-grid">{% for col in feature_columns %}<label class="field"><span>{{ col.replace('_',' ') }}</span>
+{% if col|lower in ['sex'] %}<select name="{{ col }}"><option value="">Unknown</option><option>F</option><option>M</option><option>Female</option><option>Male</option></select>
+{% elif col|lower in ['on_thyroxine','query_on_thyroxine','on_antithyroid_medication','sick','pregnant','thyroid_surgery','i131_treatment','query_hypothyroid','query_hyperthyroid','lithium','goitre','tumor','hypopituitary','psych'] %}<select name="{{ col }}"><option value="">Unknown</option><option value="f">No / false (f)</option><option value="t">Yes / true (t)</option><option>No</option><option>Yes</option></select>
+{% else %}<input name="{{ col }}" type="text" placeholder="Enter {{ col }}">{% endif %}
+</label>{% endfor %}</div>
+<button class="btn primary full" type="submit" {% if not has_model %}disabled{% endif %}>⚕ Predict Thyroid Disease</button>
+</form></div>
+{% if prediction %}<div class="prediction-result"><div class="result-icon">{{ "!" if prediction.positive >= 50 else "✓" }}</div><div><div class="eyebrow">MODEL PREDICTION</div><h2>{{ prediction.label }}</h2><p>Estimated model probability, not a diagnosis.</p></div><div class="probabilities"><div><span>Negative</span><strong>{{ prediction.negative }}%</strong><div class="bar"><i style="width:{{ prediction.negative }}%"></i></div></div><div><span>Positive</span><strong>{{ prediction.positive }}%</strong><div class="bar positive"><i style="width:{{ prediction.positive }}%"></i></div></div></div></div>{% endif %}
+<div class="notice">For demonstration only. A clinician must interpret thyroid tests and symptoms; this model must not be used to diagnose or treat disease.</div>
+<script>
+function fillSample(kind) {
+ const form = document.querySelector('.predict-form');
+ const values = {};
+ {% for col in feature_columns %}
+ values[{{ col|tojson }}] = {{ col|lower|tojson }};
+ {% endfor %}
+ for (const el of form.elements) {
+   if (!el.name) continue;
+   const n = el.name.toLowerCase();
+   if (el.tagName === 'SELECT') {
+     if (n === 'sex') el.value = kind === 'negative' ? 'F' : 'M';
+     else if (['on_thyroxine','query_on_thyroxine','on_antithyroid_medication','sick','pregnant','thyroid_surgery','i131_treatment','query_hypothyroid','query_hyperthyroid','lithium','goitre','tumor','hypopituitary','psych'].includes(n)) el.value = kind === 'negative' ? 'f' : 't';
+   } else {
+     if (n === 'age') el.value = kind === 'negative' ? '45' : '68';
+     else if (n === 'tsh') el.value = kind === 'negative' ? '1.2' : '8.5';
+     else if (n === 't3') el.value = kind === 'negative' ? '2.0' : '0.5';
+     else if (n === 'tt4') el.value = kind === 'negative' ? '120' : '35';
+     else if (n === 'fti') el.value = kind === 'negative' ? '110' : '22';
+     else if (n === 't4u') el.value = kind === 'negative' ? '1.0' : '0.7';
+     else el.value = '';
+   }
+ }
+}
+</script>
+{% endblock %}

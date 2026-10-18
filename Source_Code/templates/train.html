@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Train Models{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">MODEL DEVELOPMENT</div><h1>Train Machine Learning Models</h1><p>Train two classifiers and evaluate them on a held-out test set.</p></div>
+<div class="model-cards"><div class="model-card"><div class="feature-icon blue">🌲</div><h2>Random Forest</h2><p>Ensemble of decision trees with balanced class weights.</p><div class="tags"><span>150 estimators</span><span>Balanced classes</span><span>SMOTE pipeline</span></div></div><div class="model-card"><div class="feature-icon teal">▥</div><h2>Logistic Regression</h2><p>Linear probabilistic classifier with standardized numeric features.</p><div class="tags"><span>L2 regularization</span><span>Balanced classes</span><span>SMOTE pipeline</span></div></div></div>
+<div class="notice">Leak-free evaluation: preprocessing and SMOTE are fitted inside each cross-validation fold, not on the validation fold.</div>
+{% if error %}<div class="alert error"><strong>Training failed:</strong> {{ error }}</div>{% endif %}
+<form method="post" class="panel training-panel"><h2>Start Training</h2><p>{% if dataset_exists %}Dataset found. Training will generate metrics and charts.{% else %}Upload a dataset before training.{% endif %}</p><button class="btn primary full" type="submit" {% if not dataset_exists %}disabled{% endif %}>▶ Start Training</button></form>
+{% if summary %}<div class="alert success">Training results are available. Best model by F1-score: {{ summary.best_model }}.</div>{% endif %}
+{% endblock %}
