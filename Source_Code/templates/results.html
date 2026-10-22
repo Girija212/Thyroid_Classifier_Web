@@ -1,9 +1,0 @@
-{% extends "base.html" %}{% block title %}Results{% endblock %}
-{% block content %}
-<div class="page-heading"><div class="eyebrow">EVALUATION</div><h1>Model Results</h1><p>Metrics calculated from the uploaded dataset and held-out test set.</p></div>
-{% if summary %}
-<div class="winner"><div class="trophy">🏆</div><div><div class="eyebrow">BEST MODEL BY F1-SCORE</div><h2>{{ summary.best_model }}</h2><p>Accuracy: {{ "%.4f"|format(summary.results[summary.best_model].accuracy) }} · F1-score: {{ "%.4f"|format(summary.results[summary.best_model].f1) }}</p></div></div>
-<div class="table-wrap"><table><thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>ROC-AUC</th><th>CV F1 mean</th><th>CV std</th></tr></thead><tbody>{% for name, m in summary.results.items() %}<tr><td><strong>{{ name }}</strong>{% if name == summary.best_model %} <span class="pill">Best</span>{% endif %}</td><td>{{ "%.4f"|format(m.accuracy) }}</td><td>{{ "%.4f"|format(m.precision) }}</td><td>{{ "%.4f"|format(m.recall) }}</td><td><strong>{{ "%.4f"|format(m.f1) }}</strong></td><td>{{ "%.4f"|format(m.roc_auc) }}</td><td>{{ "%.4f"|format(m.cv_mean) }}</td><td>{{ "%.4f"|format(m.cv_std) }}</td></tr>{% endfor %}</tbody></table></div>
-<div class="chart-grid">{% for img in ["performance_comparison.png","confusion_matrices.png","roc_curves.png","feature_importance.png"] %}{% if img in image_files %}<div class="chart-card"><img src="{{ url_for('chart_file', filename=img) }}" alt="{{ img }}"><div>{{ img.replace('_',' ').replace('.png','').title() }}</div></div>{% endif %}{% endfor %}</div>
-{% else %}<div class="empty">No results yet. <a href="{{ url_for('train') }}">Train the models</a> first.</div>{% endif %}
-{% endblock %}

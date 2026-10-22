@@ -1,7 +1,0 @@
-{% extends "base.html" %}{% block title %}Batch Prediction{% endblock %}
-{% block content %}
-<div class="page-heading"><div class="eyebrow">BATCH INFERENCE</div><h1>Batch Predictions</h1><p>Upload a CSV containing the same feature columns used during training.</p></div>
-<div class="panel upload-panel"><form method="post" enctype="multipart/form-data" class="upload-form"><label class="dropzone"><div class="csv-icon">CSV</div><strong>Choose batch input file</strong><span>CSV must contain all trained feature columns</span><input type="file" name="batch_file" accept=".csv" required></label><button class="btn primary full" type="submit">Run Batch Prediction</button></form></div>
-{% if error %}<div class="alert error">{{ error }}</div>{% endif %}
-{% if result_csv %}<div class="panel"><h2>Predictions completed</h2><p>{{ count }} rows processed.</p><a class="btn primary" download="thyroid_predictions.csv" href="data:text/csv;charset=utf-8,{{ result_csv|urlencode }}">Download prediction CSV</a></div>{% endif %}
-{% endblock %}

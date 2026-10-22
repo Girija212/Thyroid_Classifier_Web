@@ -1,5 +1,0 @@
-{% extends "base.html" %}{% block title %}Upload Dataset{% endblock %}
-{% block content %}
-<div class="page-heading"><div class="eyebrow">DATA MANAGEMENT</div><h1>Upload Thyroid Dataset</h1><p>Upload a CSV containing thyroid lab results, clinical features, and a diagnosis/target column.</p></div>
-<div class="panel upload-panel"><div class="upload-hero"><div class="upload-symbol">⇧</div><h2>Upload Thyroid Dataset</h2><p>Patient data in CSV format</p></div><form method="post" enctype="multipart/form-data" class="upload-form"><label class="dropzone"><div class="csv-icon">CSV</div><strong>Choose your dataset</strong><span>Click to browse for a .csv file</span><input type="file" name="dataset" accept=".csv" required></label><button class="btn primary full" type="submit">⇧ Upload and Validate</button></form><div class="tip"><strong>Expected file:</strong> `hypothyroid.csv` or `thyroid_data.csv`<br><strong>Target column:</strong> Class, target, diagnosis, binaryClass, or label.</div></div>
-{% endblock %}
